@@ -1,0 +1,42 @@
+WITH surface_temp AS (
+  SELECT 
+	metadata_values.object_id,
+	metadata_values.numerical_value
+  FROM metadata_values
+  JOIN metadata_keys ON metadata_values.key_id = metadata_keys.ROWID
+  WHERE metadata_keys.key = '_HKPrivateMetadataKeySkinSurfaceTemperature'
+),
+
+algorithm_version AS (
+  SELECT 
+	metadata_values.object_id,
+	metadata_values.numerical_value
+  FROM metadata_values
+  JOIN metadata_keys ON metadata_values.key_id = metadata_keys.ROWID
+  WHERE metadata_keys.key = 'HKAlgorithmVersion'
+)
+
+SELECT
+  DATETIME(samples.start_date + 978307200, 'UNIXEPOCH') AS "Start Time",
+  DATETIME(samples.end_date + 978307200, 'UNIXEPOCH') AS "End Time", 
+  DATETIME(objects.creation_date + 978307200, 'UNIXEPOCH') AS "Date Added to Health",
+  quantity_samples.quantity AS "Wrist Temperature (°C)",
+  ((quantity_samples.quantity * 1.8) + 32) AS "Wrist Temperature (°F)",
+  healthdb.sources.name AS "Source",
+  algorithm_version.numerical_value AS "Algorithm Version",
+  surface_temp.numerical_value AS "Surface Temperature (°C)",
+  ((surface_temp.numerical_value * 1.8) + 32) AS "Surface Temperature (°F)",
+  healthdb.source_devices.name AS "Name",
+  healthdb.source_devices.manufacturer AS "Manufacturer",
+  healthdb.source_devices.model AS "Model",
+  healthdb.source_devices.hardware AS "Hardware Version",
+  healthdb.source_devices.software AS "Software Version"
+FROM samples
+LEFT OUTER JOIN quantity_samples ON quantity_samples.data_id = samples.data_id
+LEFT OUTER JOIN objects ON samples.data_id = objects.data_id
+LEFT OUTER JOIN data_provenances ON objects.provenance = data_provenances.ROWID
+LEFT OUTER JOIN surface_temp ON surface_temp.object_id = samples.data_id
+LEFT OUTER JOIN algorithm_version ON algorithm_version.object_id = samples.data_id
+LEFT OUTER JOIN healthdb.sources ON healthdb.sources.ROWID = data_provenances.source_id
+LEFT OUTER JOIN healthdb.source_devices ON healthdb.source_devices.ROWID = data_provenances.device_id
+WHERE samples.data_type = 256;
