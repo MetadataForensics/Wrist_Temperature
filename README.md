@@ -18,7 +18,7 @@ Somewhat uniquely, this query also uses Common Table Expressions (CTEs), which a
 
 <img width="1180" height="122" alt="Screenshot 2025-07-16 142456" src="https://github.com/user-attachments/assets/6f6c8931-2f26-4d87-aa53-919944f965cf" />
  
-Filtering our **samples** table for data_type 256 provides data_id values as well as start_date and end_date timestamps also. Further filtering our **metadata_values** table object_id column with a data_id value from the **samples** table reveals two rows of data. The **metadata_keys** table joins to the **metadata_values** table through metadata_values.key_id = metadata_keys.ROWID. The metadata_keys.key value yields the context behind our metadata_values.numerical_value data. Note: As the metadata_keys.key value to ROWID value can vary our query uses the key value.
+Filtering our **samples** table for data_type 256 provides data_id values as well as start_date and end_date timestamps. Further filtering our **metadata_values** table object_id column with a data_id value from the **samples** table reveals two rows of data. The **metadata_keys** table joins to the **metadata_values** table through metadata_values.key_id = metadata_keys.ROWID. The metadata_keys.key value yields the context behind our metadata_values.numerical_value data. Note: As the metadata_keys.key value to ROWID value can vary our query uses the key value.
 
 # Resources referenced:
 -  [DB Browser for SQLite](https://sqlitebrowser.org/) (Image above is a depiction through DB Browser for SQLite, Version 3.13.1)
