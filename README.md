@@ -1,6 +1,11 @@
 # Wrist-Temperature
 Our SQL query for Wrist Temperature data recorded by the Apple Watch while the user is sleeping. Results from this query mirror that of what the user would see within Health Application > Show All Health Data > Wrist Temperature > Show All Data. Here, each days data is parsed to mirror the sample and device details. This data can lend insight into the well-being of the user, Apple cites variables to Wrist Temperature such as diet, exercise, alcohol consumption, menstrual cycles, and illness.
 
+# Where to Use:
+
+- The SQL queries will work in most SQLite database viewers able to execute SQL queries. 
+- Supported within iLEAPP, available [here](https://github.com/abrignoni/iLEAPP).
+
 # File Location
 This data pertains to the Apple Watch and recorded within the healthdb_secure.sqlite and health.sqlite databases, available through encrypted Advanced Logical and Full File System Extractions. As the SQL query pulls data from both databases, the health.sqlite database must be attached with database name healthdb prior to running the query - this can be completed within DB Browser for SQLite and other database viewers.
 
